@@ -14,5 +14,5 @@ for ticker in vnx_ticker:
         ticker_data = pd.read_csv(file, usecols=["close"])
         price = np.array(ticker_data["close"])
         # reversed_price = price[::-1]  # Reverse an array
-        if Ticker.isFollowTreding(price):
+        if Ticker.isFollowTrending(price):
             print(ticker_id)

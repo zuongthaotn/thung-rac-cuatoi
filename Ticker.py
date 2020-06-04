@@ -20,3 +20,6 @@ def isStockOut(priceArrs):
                 if max_month3s > min_week * 1.04:
                     return True
     return False
+
+def isFollowTrending():
+    return True;
