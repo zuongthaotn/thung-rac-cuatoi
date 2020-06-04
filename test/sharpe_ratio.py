@@ -16,5 +16,3 @@
 # sr = r.mean()/r.std() * np.sqrt(252)
 #
 # print(sr)
-import random
-print(random.randint(0,9))
