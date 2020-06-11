@@ -1,5 +1,6 @@
 import numpy as np;
 
+
 #  Done
 def isStockOut(priceArrs):
     week_price = priceArrs[-5:-1]
@@ -21,9 +22,11 @@ def isStockOut(priceArrs):
                     return True
     return False
 
+
 # Doing
 def isFollowTrending():
     return True;
+
 
 # Doing
 def isPriceUpTrendByRSI(priceArrs):
@@ -41,3 +44,10 @@ def isPriceUpTrendByRSI(priceArrs):
     RS = totalIncrease / totalDecrease
     RSI = 100 - 100 / (1 + RS)
     return
+
+
+def getListVN30():
+    hose30 = ["CII", "CTD", "CTG", "DHG", "DPM", "EIB", "FPT", "GAS", "GMD", "HDB",
+              "HPG", "MBB", "MSN", "MWG", "NVL", "PNJ", "REE", "ROS", "SAB", "SBT",
+              "SSI", "STB", "TCB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE"]
+    return hose30
