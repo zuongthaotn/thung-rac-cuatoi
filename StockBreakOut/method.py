@@ -25,4 +25,4 @@ for ticker in vnx_ticker:
     price = np.array(ticker_data["close"])
     # reversed_price = price[::-1]  # Reverse an array
     if Ticker.isStockOut(price):
-        print(ticker_id)
+        print("Mua co phieu " + ticker_id + " voi gia " + str(price[-1]))
