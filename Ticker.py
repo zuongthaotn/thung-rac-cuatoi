@@ -51,3 +51,8 @@ def getListVN30():
               "HPG", "MBB", "MSN", "MWG", "NVL", "PNJ", "REE", "ROS", "SAB", "SBT",
               "SSI", "STB", "TCB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE"]
     return hose30
+
+
+def getListVN30ProfitableOfStockBreakout():
+    hose30 = ["CTG", "GMD", "PNJ", "REE", "SBT", "VCB", "VIC", "VJC", "VPB"]
+    return hose30
