@@ -35,12 +35,12 @@ for ticker in vnx_ticker:
             ans = datetime.date(year, month, day)
             # Monday is 0 and Sunday is 6.
             weekday = ans.weekday()
-            if weekday == 4 and sold is True:
+            if weekday == 3 and sold is True:
                 sold = False
                 buy_price = curr_price
                 sl_buy = round(budget / (buy_price*10)) * 10
                 history_log += "Mua " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(curr_price) + " ngay " + data[date_col_index] + "\n"
-            if weekday == 2 and sold is False:
+            if weekday == 1 and sold is False:
                 sold = True
                 commission = sl_buy * (buy_price - curr_price)
                 history_log += "Ban " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(curr_price) + " ngay " + data[date_col_index] + "\n"
