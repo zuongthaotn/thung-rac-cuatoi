@@ -13,6 +13,7 @@ vnx = pd.read_csv('data/VNX.csv', usecols=["ticker", "exchange"])
 vnx_ticker = np.array(vnx)
 # vnx_ticker = Ticker.getListVN30()
 close_col_index = 4
+open_col_index = 1
 date_col_index = 0
 budget = 10000  # 10tr
 test_from_date = "2020-01-01"  # Y-m-d
@@ -43,31 +44,32 @@ for ticker in vnx_ticker:
             curr_date = data[date_col_index]
             curr_date_str = time.strptime(curr_date, "%Y-%m-%d")
             if curr_date_str > from_date:
-                curr_price = data[close_col_index]
-                if curr_price > maxPrice:
-                    maxPrice = curr_price
+                opened_price = data[open_col_index]
+                closed_price = data[close_col_index]
+                if closed_price > maxPrice:
+                    maxPrice = closed_price
                 if minPrice == 0:
-                    minPrice = curr_price
-                if curr_price < minPrice:
-                    minPrice = curr_price
+                    minPrice = closed_price
+                if closed_price < minPrice:
+                    minPrice = closed_price
                 year, month, day = (int(x) for x in curr_date.split('-'))
                 ans = datetime.date(year, month, day)
                 # Monday is 0 and Sunday is 6.
                 weekday = ans.weekday()
                 if weekday == buyDay and sold is True:
                     sold = False
-                    buy_price = curr_price
+                    buy_price = opened_price
                     sl_buy = round(budget / (buy_price*10)) * 10
-                    history_log += "Mua " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(curr_price) + " ngay " + data[date_col_index] + "\n"
+                    history_log += "Mua " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(buy_price) + " ngay " + data[date_col_index] + "\n"
                 if weekday == sellDay and sold is False:
                     sold = True
-                    commission = sl_buy * (buy_price - curr_price)
+                    commission = sl_buy * (buy_price - closed_price)
                     total_commission += commission
-                    if buy_price > curr_price:
+                    if buy_price > closed_price:
                         time_profit += 1
                     else:
                         time_loss += 1
-                    history_log += "Ban " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(curr_price) + " ngay " + data[date_col_index] + "\n"
+                    history_log += "Ban " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(closed_price) + " ngay " + data[date_col_index] + "\n"
         if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5:
             if total_commission > best_profit:
                 best_profit = total_commission
