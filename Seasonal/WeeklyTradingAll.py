@@ -21,7 +21,7 @@ best_profit = 0
 best_profit_ticker = ''
 from_date = time.strptime(test_from_date, "%Y-%m-%d")
 buyDay = _v.Monday
-sellDay = _v.Friday
+sellDay = _v.Wednesday
 for ticker in vnx_ticker:
     if ticker[1] == 'HOSE':
         ticker_id = ticker[0]
@@ -80,7 +80,7 @@ for ticker in vnx_ticker:
         if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5 and maxPrice < minPrice*1.3:
             # Don gia 1000
             print("Total commission of " + ticker_id + ": " + str(round(total_commission * 1000, 2)) + ". Profits: "+str(time_profit)+". Losses: "+str(time_loss))
-            f = open(ticker_id + "-buy-sell-weekly-" + str(buyDay) + str(sellDay) + ".log", "w+")
+            f = open('log/'+ticker_id + "-buy-sell-weekly-" + str(buyDay) + str(sellDay) + ".log", "w+")
             f.write(history_log)
             f.close()
 if best_profit > 0:
