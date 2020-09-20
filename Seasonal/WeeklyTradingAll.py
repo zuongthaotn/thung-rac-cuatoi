@@ -20,8 +20,8 @@ test_from_date = "2020-01-01"  # Y-m-d
 best_profit = 0
 best_profit_ticker = ''
 from_date = time.strptime(test_from_date, "%Y-%m-%d")
-buyDay = _v.Monday
-sellDay = _v.Wednesday
+buyDay = _v.Tuesday
+sellDay = _v.Friday
 for ticker in vnx_ticker:
     if ticker[1] == 'HOSE':
         ticker_id = ticker[0]
@@ -44,7 +44,7 @@ for ticker in vnx_ticker:
             curr_date = data[date_col_index]
             curr_date_str = time.strptime(curr_date, "%Y-%m-%d")
             if curr_date_str > from_date:
-                opened_price = data[open_col_index]
+                #opened_price = data[open_col_index]
                 closed_price = data[close_col_index]
                 if closed_price > maxPrice:
                     maxPrice = closed_price
@@ -58,7 +58,7 @@ for ticker in vnx_ticker:
                 weekday = ans.weekday()
                 if weekday == buyDay and sold is True:
                     sold = False
-                    buy_price = opened_price
+                    buy_price = closed_price
                     sl_buy = round(budget / (buy_price*10)) * 10
                     history_log += "Mua " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(buy_price) + " ngay " + data[date_col_index] + "\n"
                 if weekday == sellDay and sold is False:
@@ -80,7 +80,7 @@ for ticker in vnx_ticker:
         if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5 and maxPrice < minPrice*1.3:
             # Don gia 1000
             print("Total commission of " + ticker_id + ": " + str(round(total_commission * 1000, 2)) + ". Profits: "+str(time_profit)+". Losses: "+str(time_loss))
-            f = open('log/'+ticker_id + "-buy-sell-weekly-" + str(buyDay) + str(sellDay) + ".log", "w+")
+            f = open('log/buyATC-sellATC-weekly/'+ticker_id + "-" + str(buyDay) + str(sellDay) + ".log", "w+")
             f.write(history_log)
             f.close()
 if best_profit > 0:
