@@ -15,13 +15,13 @@ vnx_ticker = np.array(vnx)
 close_col_index = 4
 open_col_index = 1
 date_col_index = 0
-budget = 10000  # 10tr
+budget = 5000  # 5tr
 test_from_date = "2020-01-01"  # Y-m-d
 best_profit = 0
 best_profit_ticker = ''
 from_date = time.strptime(test_from_date, "%Y-%m-%d")
-buyDay = _v.Tuesday
-sellDay = _v.Friday
+buyDay = _v.Monday
+sellDay = _v.Thursday
 for ticker in vnx_ticker:
     if ticker[1] == 'HOSE':
         ticker_id = ticker[0]
@@ -60,24 +60,27 @@ for ticker in vnx_ticker:
                     sold = False
                     buy_price = closed_price
                     sl_buy = round(budget / (buy_price*10)) * 10
-                    history_log += "Mua " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(buy_price) + " ngay " + data[date_col_index] + "\n"
+                    history_log += "Mua " + str(sl_buy) + " cp " + ticker_id + " gia: " + str(buy_price) + " ngay " + data[date_col_index] + "\n"
                 if weekday == sellDay and sold is False:
+                    history_log += "Ban " + str(sl_buy) + " cp " + ticker_id + " gia: " + str(closed_price) + " ngay " + \
+                                   data[date_col_index]
                     sold = True
-                    commission = sl_buy * (buy_price - closed_price)
+                    commission = sl_buy * (closed_price - buy_price)
                     total_commission += commission
-                    if buy_price > closed_price:
+                    if buy_price < closed_price:
                         time_profit += 1
+                        history_log += ". Lai " + str(commission) + "\n"
                     else:
                         time_loss += 1
-                    history_log += "Ban " + str(sl_buy) + " co phieu " + ticker_id + " o gia: " + str(closed_price) + " ngay " + data[date_col_index] + "\n"
+                        history_log += ". Lo " + str(commission) + "\n"
         if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5:
-            if total_commission > best_profit:
-                best_profit = total_commission
-                best_profit_ticker = ticker_id
             print("[" + ticker[1] + "] Total commission of " + ticker_id + ": " + str(
                 round(total_commission * 1000, 2)) + ". Profits: " + str(time_profit) + ". Losses: " + str(time_loss))
 
         if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5 and maxPrice < minPrice*1.3:
+            if total_commission > best_profit:
+                best_profit = total_commission
+                best_profit_ticker = ticker_id
             # Don gia 1000
             print("Total commission of " + ticker_id + ": " + str(round(total_commission * 1000, 2)) + ". Profits: "+str(time_profit)+". Losses: "+str(time_loss))
             f = open('log/buyATC-sellATC-weekly/'+ticker_id + "-" + str(buyDay) + str(sellDay) + ".log", "w+")
