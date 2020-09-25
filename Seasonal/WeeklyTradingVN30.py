@@ -9,43 +9,35 @@ import common_vars as _v
 
 os.chdir('../')
 path = os.getcwd()
-blue_chip_tickers = Ticker.getListBlueChips2020()
+vn30_ticker = Ticker.getListVN30()
 close_col_index = 4
 open_col_index = 1
 date_col_index = 0
 budget = 5000  # 5tr
-test_from_date = "2014-01-01"  # Y-m-d
-from_date = time.strptime(test_from_date, "%Y-%m-%d")
-buyAndSellDays = [[0, 2], [0, 3], [0, 4],
-                  [1, 3], [1, 4], [1, 0],
-                  [2, 4], [2, 0], [2, 1],
-                  [3, 0], [3, 1], [3, 2],
-                  [4, 1], [4, 2], [4, 3]
-                  ]
-ticker_id = 'BID'
+test_from_date = "2020-01-01"  # Y-m-d
 best_profit = 0
-best_buy_day = -1
-best_sell_day = -1
+best_sideway_profit = 0
 best_profit_ticker = ''
-highlight = ''
-if platform.system() == 'Windows':
-    file = path + "\\data\\VNX\\" + ticker_id + '\\Price.csv'
-if platform.system() != 'Windows':
-    file = path + '/data/VNX/' + ticker_id + '/Price.csv'
-ticker_csv_data = pd.read_csv(file)
-ticker_data = np.array(ticker_csv_data)
-for weekday in buyAndSellDays:
+best_sideway_profit_ticker = ''
+from_date = time.strptime(test_from_date, "%Y-%m-%d")
+buyDay = _v.Friday
+sellDay = _v.Tuesday
+for ticker_id in vn30_ticker:
     sold = True
     buy_price = 0
+    commission = 0
     maxPrice = 0
     minPrice = 0
-    commission = 0
     total_commission = 0
     time_loss = 0
     time_profit = 0
     history_log = ''
-    buyDay = weekday[0]
-    sellDay = weekday[1]
+    if platform.system() == 'Windows':
+        file = path + "\\data\\VNX\\" + ticker_id + '\\Price.csv'
+    if platform.system() != 'Windows':
+        file = path + '/data/VNX/' + ticker_id + '/Price.csv'
+    ticker_csv_data = pd.read_csv(file)
+    ticker_data = np.array(ticker_csv_data)
     for data in ticker_data:
         curr_date = data[date_col_index]
         curr_date_str = time.strptime(curr_date, "%Y-%m-%d")
@@ -66,9 +58,8 @@ for weekday in buyAndSellDays:
                 sold = False
                 buy_price = closed_price
                 sl_buy = round(budget / (buy_price * 10)) * 10
-                history_log += "Mua " + str(sl_buy) + " cp " + ticker_id + " gia: " + str(buy_price) + " ngay " + \
-                               data[
-                                   date_col_index] + "\n"
+                history_log += "Mua " + str(sl_buy) + " cp " + ticker_id + " gia: " + str(buy_price) + " ngay " + data[
+                    date_col_index] + "\n"
             if weekday == sellDay and sold is False:
                 history_log += "Ban " + str(sl_buy) + " cp " + ticker_id + " gia: " + str(closed_price) + " ngay " + \
                                data[date_col_index]
@@ -81,22 +72,24 @@ for weekday in buyAndSellDays:
                 else:
                     time_loss += 1
                     history_log += ". Lo " + str(commission) + "\n"
-    # Don gia 1000
-    # print("[Buy " + _v.WEEK_DAY[buyDay] + " & Sell " + _v.WEEK_DAY[
-    #     sellDay] + "] Total commission of " + ticker_id + ": " + str(
-    #     round(total_commission * 1000, 2)) + ". Profits: " + str(time_profit) + ". Losses: " + str(
-    #     time_loss))
-    f = open('log/buyATC-sellATC-weekly/BlueChips/' + ticker_id + "-" + str(_v.WEEK_DAY_SHORT[buyDay]) + "-" + str(_v.WEEK_DAY_SHORT[sellDay]) + ".log",
-             "w+")
-    f.write(history_log)
-    f.close()
-    if total_commission > 0 and total_commission > budget * 0.1:
+    if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5:
         if total_commission > best_profit:
             best_profit = total_commission
             best_profit_ticker = ticker_id
-            best_buy_day = str(_v.WEEK_DAY[buyDay])
-            best_sell_day = str(_v.WEEK_DAY[sellDay])
-        if time_profit > time_loss * 1.5:
-            highlight = '[Highlight]'
+        print("Total commission of " + ticker_id + ": " + str(
+            round(total_commission * 1000, 2)) + ". Profits: " + str(time_profit) + ". Losses: " + str(time_loss))
+
+    if total_commission > 0 and total_commission > budget * 0.1 and time_profit > time_loss * 1.5 and maxPrice < minPrice * 1.3:
+        if total_commission > best_sideway_profit:
+            best_sideway_profit = total_commission
+            best_sideway_profit_ticker = ticker_id
+        # Don gia 1000
+        print("[Side way] Total commission of " + ticker_id + ": " + str(
+            round(total_commission * 1000, 2)) + ". Profits: " + str(time_profit) + ". Losses: " + str(time_loss))
+        f = open('log/buyATC-sellATC-weekly/' + ticker_id + "-" + str(buyDay) + str(sellDay) + ".log", "w+")
+        f.write(history_log)
+        f.close()
 if best_profit > 0:
-    print("[Blue Chip]" + highlight + ticker_id + " giving best profit: " + str(round(best_profit * 1000, 2)) + " when buy on " + best_buy_day + " and sell on " + best_sell_day)
+    print(" Ticker's giving best profit is " + best_profit_ticker + ": " + str(round(best_profit * 1000, 2)))
+if best_sideway_profit > 0:
+    print(" Sideway Ticker's giving best profit is " + best_sideway_profit_ticker + ": " + str(round(best_sideway_profit * 1000, 2)))

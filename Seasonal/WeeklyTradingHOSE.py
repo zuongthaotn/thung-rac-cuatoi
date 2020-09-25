@@ -20,7 +20,7 @@ test_from_date = "2020-01-01"  # Y-m-d
 best_profit = 0
 best_profit_ticker = ''
 from_date = time.strptime(test_from_date, "%Y-%m-%d")
-buyDay = _v.Monday
+buyDay = _v.Friday
 sellDay = _v.Thursday
 for ticker in vnx_ticker:
     if ticker[1] == 'HOSE':

@@ -3,3 +3,4 @@
 /.idea
 /__pycache__
 /log/buyATC-sellATC-weekly/*.log
+/log/buyATC-sellATC-weekly/BlueChips/*.log

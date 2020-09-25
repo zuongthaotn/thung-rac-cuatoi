@@ -56,3 +56,7 @@ def getListVN30():
 def getListVN30ProfitableOfStockBreakout():
     hose30 = ["CTG", "GMD", "PNJ", "REE", "SBT", "VCB", "VIC", "VJC", "VPB"]
     return hose30
+
+def getListBlueChips2020():
+    blue_chips = ["VNM", "VCB", "VIC", "FPT", "MWG", "VJC", "HPG", "DHG", "SAB", "MBB", "BID", "POW"]
+    return blue_chips
