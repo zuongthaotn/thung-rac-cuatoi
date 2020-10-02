@@ -1,6 +1,5 @@
 import numpy as np;
 
-
 #  Done
 def isStockOut(priceArrs):
     week_price = priceArrs[-5:-1]
