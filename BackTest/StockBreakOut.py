@@ -4,7 +4,7 @@ import Ticker
 
 
 def main():
-    ticker_id = 'CLL'
+    ticker_id = 'BID'
     file = '../data/VNX/' + ticker_id + '/Price.csv'
     ticker_data = pd.read_csv(file)
     data = np.array(ticker_data)
