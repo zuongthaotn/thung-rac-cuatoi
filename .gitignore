@@ -5,3 +5,5 @@
 /log/buyATC-sellATC-weekly/*.log
 /log/buyATC-sellATC-weekly/BlueChips/*.log
 /Seasonal/.ipynb_checkpoints/
+/tracking-history.log
+/cophieu68/*
