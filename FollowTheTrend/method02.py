@@ -3,6 +3,7 @@ import pandas as pd
 import platform
 import os
 
+MULTIPLIER_NUMBER = 2
 os.chdir('../')
 path = os.getcwd()
 if platform.system() == 'Windows':
@@ -29,7 +30,12 @@ for ticker in vnx_ticker:
         min_volumn = min(last_5_volumns)
         max_volumn = max(last_5_volumns)
         last_volumn = last_5_volumns[-1]
+        mean_f = np.mean(volumns[-5:-2])
         # if last_volumn > 2.5 * min_volumn:
         # if last_3_prices[0] < last_3_prices[1] and last_3_prices[0] < last_3_prices[2]:
-        if last_3_prices[0] < last_3_prices[1] and last_3_prices[0] < last_3_prices[2] and last_volumn > 2.5 * min_volumn and last_volumn > 1000000 and last_open_price < last_3_prices[2]:
-            print(ticker_id)
+        # if last_3_prices[0] < last_3_prices[1] and last_3_prices[0] < last_3_prices[2] and last_volumn > MULTIPLIER_NUMBER * min_volumn and last_volumn > 1000000 and last_open_price < last_3_prices[2]:
+        if last_3_prices[0] < last_3_prices[1] and last_3_prices[0] < last_3_prices[
+            2] and last_volumn == max_volumn and last_volumn > MULTIPLIER_NUMBER * mean_f and last_volumn > 1000000 and last_open_price < \
+                last_3_prices[2]:
+            print(ticker_id + '--last:' + str(last_volumn) + '--mean:' + str(round(mean_f, 0)) + '--max:' + str(
+                max_volumn) + '--min:' + str(min_volumn))
