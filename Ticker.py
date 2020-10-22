@@ -24,6 +24,11 @@ def isStockOut(priceArrs):
 
 # Doing
 def isFollowTrending():
+    """
+    Rule:
+
+    :return:
+    """
     return True;
 
 

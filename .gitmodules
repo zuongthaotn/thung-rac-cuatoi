@@ -1,3 +1,0 @@
-[submodule "backtesting"]
-	path = backtesting
-	url = git@github.com:zuongthaotn/backtesting.py.git
