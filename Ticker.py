@@ -24,13 +24,30 @@ def isStockOut(priceArrs):
 
 # Doing
 def isFollowTrending():
+    return True
+
+# Done
+def isFollowTrendingV2(prices, volumes, last_open_price, multiplier_number):
     """
     Rule:
-
+        1. Last volume is bigger than 1000000
+        2. Close price yesterday is SMALLER than close price today
+        3. Close price 2 days ago is SMALLER than close price today
+        4. Last volume is max/biggest in last 5 days
+        5. Last volume is bigger than multiplier_number * average of last 5 day volumes
+        6. Today open price is smaller than today close price.
     :return:
     """
-    return True;
-
+    last_5_volumns = volumes[-5::]
+    last_3_prices = prices[-3::]
+    max_volumn = max(last_5_volumns)
+    last_volumn = last_5_volumns[-1]
+    mean_f = np.mean(volumes[-5:-2])
+    if last_3_prices[0] < last_3_prices[1] and last_3_prices[0] < last_3_prices[
+        2] and last_volumn == max_volumn and last_volumn > multiplier_number * mean_f and last_volumn > 1000000 and last_open_price < \
+            last_3_prices[2]:
+        return True;
+    return False
 
 # Doing
 def isPriceUpTrendByRSI(priceArrs):
