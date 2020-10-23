@@ -2,6 +2,15 @@ import numpy as np;
 
 #  Done
 def isStockOut(priceArrs):
+    """
+        Rule:
+            1. Bien dong gia 3 thang(22 ngay) gan day <20%
+            2. Bien dong gia tuan(5 ngay) gan day < 10%
+            3. Dang co dau hieu hoi phuc
+                Today price is bigger than yesterday & today price is bigger than smallest price in 3 months
+            4. Co kha nang sinh loi
+                The biggest price in last 3 months is BIGGER than smallest price in last 5 days plus 40%
+        """
     week_price = priceArrs[-5:-1]
     month3s_price = priceArrs[-66:-1]
     min_week = np.min(week_price)
@@ -12,7 +21,7 @@ def isStockOut(priceArrs):
     prev_last = priceArrs[-2]
     # Bien dong gia 3 thang gan day <20%
     if max_month3s < min_month3s * 1.21:
-        # Bien dong gia tuan gan day 10%
+        # Bien dong gia tuan gan day < 10%
         if max_week > min_week and max_week < min_week * 1.11:
             # Dang co dau hieu hoi phuc
             if last > prev_last and last > min_month3s:
