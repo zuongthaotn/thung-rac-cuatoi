@@ -17,11 +17,11 @@ for ticker in vnx_ticker:
     # ticker_exchange = ticker[1]
     # if ticker_exchange == 'HOSE':
     if platform.system() == 'Windows':
-        file = path + "\\data\\VNX\\" + ticker_id + '\\Price.csv'
+        file = path + '\\cophieu68\\' + ticker_id + '.csv'
     if platform.system() != 'Windows':
-        file = path + '/data/VNX/' + ticker_id + '/Price.csv'
-    ticker_data = pd.read_csv(file, usecols=["close"])
-    price = np.array(ticker_data["close"])
+        file = path + '/cophieu68/' + ticker_id + '.csv'
+    ticker_data = pd.read_csv(file, usecols=["Close"])
+    price = np.array(ticker_data["Close"])
     # reversed_price = price[::-1]  # Reverse an array
     if Ticker.isStockOut(price):
         print("Mua co phieu " + ticker_id + " voi gia " + str(price[-1]))

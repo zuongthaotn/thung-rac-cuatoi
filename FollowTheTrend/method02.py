@@ -22,10 +22,10 @@ for ticker in vnx_ticker:
             file = path + '\\cophieu68\\' + ticker_id + '.csv'
         if platform.system() != 'Windows':
             file = path + '/cophieu68/' + ticker_id + '.csv'
-        ticker_data = pd.read_csv(file, usecols=["close", "volumn", "open"])
-        prices = np.array(ticker_data["close"])
-        volumns = np.array(ticker_data["volumn"])
-        last_open_price = np.array(ticker_data["open"])[-1]
+        ticker_data = pd.read_csv(file, usecols=["Close", "Volume", "Open"])
+        prices = np.array(ticker_data["Close"])
+        volumns = np.array(ticker_data["Volume"])
+        last_open_price = np.array(ticker_data["Open"])[-1]
         last_5_volumns = volumns[-5::]
         last_3_prices = prices[-3::]
         min_volumn = min(last_5_volumns)
