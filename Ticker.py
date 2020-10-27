@@ -1,4 +1,5 @@
 import numpy as np;
+import pandas as pd;
 
 #  Done
 def isStockOut(priceArrs):
@@ -98,16 +99,7 @@ def getListBlueChips2020():
     blue_chips = ["VNM", "VCB", "VIC", "FPT", "MWG", "VJC", "HPG", "DHG", "SAB", "MBB", "BID", "POW"]
     return blue_chips
 
-def getAllTickers():
-    import os
-    import platform
-    import pandas as pd
-    path = os.getcwd()
-    if platform.system() == 'Windows':
-        vnx_file = path + '\\VNX.csv'
-    if platform.system() != 'Windows':
-        vnx_file = path + '/VNX.csv'
-
+def getAllTickers(vnx_file):
     vnx = pd.read_csv(vnx_file, usecols=["ticker", "exchange"])
     vnx_ticker = np.array(vnx)
     return vnx_ticker
