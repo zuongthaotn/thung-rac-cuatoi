@@ -100,6 +100,6 @@ def getListBlueChips2020():
     return blue_chips
 
 def getAllTickers(vnx_file):
-    vnx = pd.read_csv(vnx_file, usecols=["ticker", "exchange"])
+    vnx = pd.read_csv(vnx_file, usecols=["ticker"])
     vnx_ticker = np.array(vnx)
-    return vnx_ticker[0]
+    return vnx_ticker
