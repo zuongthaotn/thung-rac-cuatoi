@@ -58,8 +58,11 @@ def isFollowTrendingV2(prices, volumes, last_open_price, multiplier_number):
         return True;
     return False
 
-# Doing
-def isPriceUpTrendByRSI(priceArrs):
+# Done
+def isPriceUpTrendByRSI12D(priceArrs):
+    """
+    RSI 12 Days
+    """
     a12days = priceArrs[-14:-2]
     totalIncrease = 0
     totalDecrease = 0
@@ -73,7 +76,9 @@ def isPriceUpTrendByRSI(priceArrs):
         lastPrice = close_price
     RS = totalIncrease / totalDecrease
     RSI = 100 - 100 / (1 + RS)
-    return
+    if RSI > 55:
+        return True
+    return False
 
 
 def getListVN30():

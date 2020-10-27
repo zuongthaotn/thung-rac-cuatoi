@@ -8,9 +8,9 @@ MULTIPLIER_NUMBER = 2
 os.chdir('../')
 path = os.getcwd()
 if platform.system() == 'Windows':
-    vnx_file = path + '\\data\\VNX.csv'
+    vnx_file = path + '\\VNX.csv'
 if platform.system() != 'Windows':
-    vnx_file = path + '/data/VNX.csv'
+    vnx_file = path + '/VNX.csv'
 
 vnx = pd.read_csv(vnx_file, usecols=["ticker", "exchange"])
 vnx_ticker = np.array(vnx)
