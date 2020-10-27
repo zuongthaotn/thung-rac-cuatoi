@@ -66,7 +66,7 @@ def isPriceUpTrendByRSI12D(priceArrs):
     a12days = priceArrs[-14:-2]
     totalIncrease = 0
     totalDecrease = 0
-    lastPrice = priceArrs[-15]
+    lastPrice = priceArrs[-1]
     for data in a12days:
         close_price = data
         if close_price > lastPrice:
@@ -74,6 +74,8 @@ def isPriceUpTrendByRSI12D(priceArrs):
         else:
             totalDecrease += lastPrice - close_price
         lastPrice = close_price
+    if totalDecrease == 0:
+        return False
     RS = totalIncrease / totalDecrease
     RSI = 100 - 100 / (1 + RS)
     if RSI > 55:
