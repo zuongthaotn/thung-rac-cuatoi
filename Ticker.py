@@ -1,5 +1,5 @@
-import numpy as np;
-import pandas as pd;
+import numpy as np
+import pandas as pd
 
 
 #  Done
@@ -99,7 +99,7 @@ def hasSignalByBollingerBandsV1(prices):
     d20STD = dataframe.rolling(window=20).std()
 
     upper = ma20 + (d20STD * 2)
-    lower = ma20 - (d20STD['20dSTD'] * 2)
+    lower = ma20 - (d20STD * 2)
     if prices[-1] < lower or prices[-1] == lower:
         return 1  # buy signal
     if prices[-1] > upper or prices[-1] == upper:
