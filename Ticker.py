@@ -1,6 +1,7 @@
 import numpy as np;
 import pandas as pd;
 
+
 #  Done
 def isStockOut(priceArrs):
     """
@@ -36,6 +37,7 @@ def isStockOut(priceArrs):
 def isFollowTrending():
     return True
 
+
 # Done
 def isFollowTrendingV2(prices, volumes, last_open_price, multiplier_number):
     """
@@ -58,6 +60,7 @@ def isFollowTrendingV2(prices, volumes, last_open_price, multiplier_number):
             last_3_prices[2]:
         return True;
     return False
+
 
 # Done
 def isPriceUpTrendByRSI12D(priceArrs):
@@ -84,6 +87,25 @@ def isPriceUpTrendByRSI12D(priceArrs):
     return False
 
 
+# Doing
+def hasSignalByBollingerBandsV1(prices):
+    """
+    Đường giá xuống dải Bollinger dưới: tín hiệu mua
+    :param prices: numpy array
+    :return:
+    """
+    ma20 = prices.rolling(window=20).mean()
+    d20STD = prices.rolling(window=20).std()
+
+    upper = ma20 + (d20STD * 2)
+    lower = ma20 - (d20STD['20dSTD'] * 2)
+    if prices[-1] < lower or prices[-1] == lower:
+        return 1  # buy signal
+    if prices[-1] > upper or prices[-1] == upper:
+        return -1  # sell signal
+    return 0
+
+
 def getListVN30():
     hose30 = ["CII", "CTD", "CTG", "DHG", "DPM", "EIB", "FPT", "GAS", "GMD", "HDB",
               "HPG", "MBB", "MSN", "MWG", "NVL", "PNJ", "REE", "ROS", "SAB", "SBT",
@@ -95,9 +117,11 @@ def getListVN30ProfitableOfStockBreakout():
     hose30 = ["CTG", "GMD", "PNJ", "REE", "SBT", "VCB", "VIC", "VJC", "VPB"]
     return hose30
 
+
 def getListBlueChips2020():
     blue_chips = ["VNM", "VCB", "VIC", "FPT", "MWG", "VJC", "HPG", "DHG", "SAB", "MBB", "BID", "POW"]
     return blue_chips
+
 
 def getAllTickers(vnx_file):
     vnx = pd.read_csv(vnx_file, usecols=["ticker"])
