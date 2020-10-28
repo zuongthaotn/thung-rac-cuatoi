@@ -95,9 +95,8 @@ def hasSignalByBollingerBandsV1(prices):
     :return:
     """
     dataframe = pd.DataFrame(prices)
-    ma20 = dataframe.rolling(window=20).mean()
-    d20STD = dataframe.rolling(window=20).std()
-
+    ma20 = dataframe.rolling(window=20).mean().iloc[-1].iloc[-1]
+    d20STD = dataframe.rolling(window=20).std().iloc[-1].iloc[-1]
     upper = ma20 + (d20STD * 2)
     lower = ma20 - (d20STD * 2)
     if prices[-1] < lower or prices[-1] == lower:
