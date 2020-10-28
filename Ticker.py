@@ -94,8 +94,9 @@ def hasSignalByBollingerBandsV1(prices):
     :param prices: numpy array
     :return:
     """
-    ma20 = prices.rolling(window=20).mean()
-    d20STD = prices.rolling(window=20).std()
+    dataframe = pd.DataFrame(prices)
+    ma20 = dataframe.rolling(window=20).mean()
+    d20STD = dataframe.rolling(window=20).std()
 
     upper = ma20 + (d20STD * 2)
     lower = ma20 - (d20STD['20dSTD'] * 2)
