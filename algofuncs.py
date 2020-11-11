@@ -55,6 +55,17 @@ def getAllTickers(vnx_file):
     vnx_ticker = np.array(vnx)
     return vnx_ticker.reshape(-1)
 
+def getHOSETickers(vnx_file):
+    vnx = pd.read_csv(vnx_file, usecols=["ticker", "exchange"])
+    vnx_ticker = np.array(vnx)
+    hose_ticker = []
+    for ticker in vnx_ticker:
+        ticker_id = ticker[0]
+        ticker_exchange = ticker[1]
+        if ticker_exchange == 'HOSE':
+            hose_ticker.append(ticker_id)
+    return hose_ticker
+
 # %% Get VN stocks data
 ## No longer use
 def get_pricing(filename, start_date='2000-07-28', end_date=None):
