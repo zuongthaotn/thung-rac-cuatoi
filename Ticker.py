@@ -105,25 +105,3 @@ def hasSignalByBollingerBandsV1(prices):
         return -1  # sell signal
     return 0
 
-
-def getListVN30():
-    hose30 = ["CII", "CTD", "CTG", "DHG", "DPM", "EIB", "FPT", "GAS", "GMD", "HDB",
-              "HPG", "MBB", "MSN", "MWG", "NVL", "PNJ", "REE", "ROS", "SAB", "SBT",
-              "SSI", "STB", "TCB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE"]
-    return hose30
-
-
-def getListVN30ProfitableOfStockBreakout():
-    hose30 = ["CTG", "GMD", "PNJ", "REE", "SBT", "VCB", "VIC", "VJC", "VPB"]
-    return hose30
-
-
-def getListBlueChips2020():
-    blue_chips = ["VNM", "VCB", "VIC", "FPT", "MWG", "VJC", "HPG", "DHG", "SAB", "MBB", "BID", "POW"]
-    return blue_chips
-
-
-def getAllTickers(vnx_file):
-    vnx = pd.read_csv(vnx_file, usecols=["ticker"])
-    vnx_ticker = np.array(vnx)
-    return vnx_ticker.reshape(-1)
