@@ -31,6 +31,7 @@ def get_pricing_by_path(filepath, start_date='2000-07-28', end_date=None):
     return None
 
 # %% Get VN stocks data
+## No longer use
 def get_pricing(filename, start_date='2000-07-28', end_date=None):
     import os
     from os.path import dirname, join
