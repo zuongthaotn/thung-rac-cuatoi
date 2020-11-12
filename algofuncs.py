@@ -3,14 +3,6 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-
-def isPeak3Days(Data):
-    return (Data[-3] < Data[-2]) and (Data[-2] > Data[-1])
-
-
-def isValley3Days(Data):
-    return (Data[-3] > Data[-2]) and (Data[-2] < Data[-1])
-
 # %% Get VN stocks data
 def get_pricing_by_path(filepath, start_date='2000-07-28', end_date=None):
     import os

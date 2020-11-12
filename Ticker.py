@@ -1,6 +1,12 @@
 import numpy as np
 import pandas as pd
 
+def isPeak3Days(Data):
+    return (Data[-3] < Data[-2]) and (Data[-2] > Data[-1])
+
+
+def isValley3Days(Data):
+    return (Data[-3] > Data[-2]) and (Data[-2] < Data[-1])
 
 #  Done
 def isStockOut(priceArrs):
@@ -85,7 +91,6 @@ def isPriceUpTrendByRSI12D(priceArrs):
     if RSI > 55:
         return True
     return False
-
 
 # Doing
 def hasSignalByBollingerBandsV1(prices):
