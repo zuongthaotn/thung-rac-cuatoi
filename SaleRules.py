@@ -14,6 +14,7 @@ def shouldSellByATR():
 
 def getATR(lookback, high_price, low_price):
     """
+    Average True Range
     ATR(100) - It returns the average height of a candle within the last 100 bars.
         1. ATR(100) = ((high1-low1) +(high2-low2) + ... + (high100-low100))/100
         2. ATR(100) = high.rolling(100).mean() - low.rolling(100).mean()
@@ -23,4 +24,4 @@ def getATR(lookback, high_price, low_price):
     :return float:
     """
     atr = high_price.rolling(lookback).mean() - low_price.rolling(lookback).mean()
-    return atr[-1]
+    return atr.iloc[-1]
