@@ -3,6 +3,34 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+
+def MMI(data, period=100):
+    '''
+    MMM - Market Meanness Index
+    :param data:
+    :param period: nsarray
+    :return:
+    '''
+    mmi = np.zeros(data.shape)
+    for i in range(len(data)):
+        if i < period - 1:
+            continue
+
+        m = np.median(data[(i - period + 1):i])
+        nl = 0
+        nh = 0
+        for j in range(period - 1):
+            if j < 1:
+                continue
+            if (data[i - j] > m) and (data[i - j] > data[i - j - 1]):
+                nl += 1
+            if (data[i - j] < m) and (data[i - j] < data[i - j - 1]):
+                nh += 1
+        mmi[i] = 100.0 * (nl + nh) / (period - 1)
+
+    return mmi
+
+
 # %% Get VN stocks data
 def get_pricing_by_path(filepath, start_date='2000-07-28', end_date=None):
     import os
