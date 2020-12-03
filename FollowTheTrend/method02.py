@@ -4,8 +4,8 @@ import platform
 import os
 import sys
 
-BACKTESTING_MODULE_PATH = os.path.abspath('../')
-sys.path.insert(1, BACKTESTING_MODULE_PATH)
+CUR_MODULE_PATH = os.path.abspath('../')
+sys.path.insert(1, CUR_MODULE_PATH)
 import Ticker
 
 MULTIPLIER_NUMBER = 2
