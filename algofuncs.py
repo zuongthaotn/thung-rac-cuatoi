@@ -3,6 +3,62 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+def getVolatility(array, n):
+    """
+    Computing Volatility
+    https://blog.quantinsti.com/volatility-and-measures-of-risk-adjusted-return-based-on-volatility/
+    :param array:
+    :param n:
+    :return:
+    """
+    logRet = np.log(array / array.shift(1))
+
+    # Compute Volatility using the pandas rolling standard deviation function
+    return logRet.rolling(window=n).std() * np.sqrt(n)
+
+def getSharpe(returns, rf, days=252):
+    """
+    Computing Sharpe Ratio
+    https://blog.quantinsti.com/volatility-and-measures-of-risk-adjusted-return-based-on-volatility/
+    :param returns:
+    :param rf:
+    :param days:
+    :return:
+    """
+    volatility = returns.std() * np.sqrt(days)
+    sharpe_ratio = (returns.mean() - rf) / volatility
+    return sharpe_ratio
+
+def getInformationRatio(returns, benchmark_returns, days=252):
+    """
+    Information ratio (IR)
+    https://blog.quantinsti.com/volatility-and-measures-of-risk-adjusted-return-based-on-volatility/
+    :param returns:
+    :param benchmark_returns:
+    :param days:
+    :return:
+    """
+    return_difference = returns - benchmark_returns
+    volatility = return_difference.std() * np.sqrt(days)
+    information_ratio = return_difference.mean() / volatility
+    return information_ratio
+
+def getModiglianiRatio(returns, benchmark_returns, rf, days=252):
+    """
+    Modigliani Ratio
+    https://blog.quantinsti.com/volatility-and-measures-of-risk-adjusted-return-based-on-volatility/
+    :param returns:
+    :param benchmark_returns:
+    :param rf:
+    :param days:
+    :return:
+    """
+    volatility = returns.std() * np.sqrt(days)
+    sharpe_ratio = (returns.mean() - rf) / volatility
+    benchmark_volatility = benchmark_returns.std() * np.sqrt(days)
+    m2_ratio = (sharpe_ratio * benchmark_volatility) + rf
+    return m2_ratio
+
 def SMA(array, n):
     """Simple moving average"""
     return pd.Series(array).rolling(n).mean()
