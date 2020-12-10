@@ -3,6 +3,20 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+def getATR(lookback, high_price, low_price):
+    """
+    Average True Range
+    ATR(100) - It returns the average height of a candle within the last 100 bars.
+        1. ATR(100) = ((high1-low1) +(high2-low2) + ... + (high100-low100))/100
+        2. ATR(100) = high.rolling(100).mean() - low.rolling(100).mean()
+    :param int lookback:
+    :param pandas high_price:
+    :param pandas low_price:
+    :return float:
+    """
+    atr = high_price.rolling(lookback).mean() - low_price.rolling(lookback).mean()
+    return atr.iloc[-1]
+
 def getVolatility(array, n):
     """
     Computing Volatility
@@ -15,6 +29,18 @@ def getVolatility(array, n):
 
     # Compute Volatility using the pandas rolling standard deviation function
     return logRet.rolling(window=n).std() * np.sqrt(n)
+
+def getVolatilityV2(lookback, high_price, low_price, close_price):
+    """
+        Computing Volatility
+        :param int lookback:
+        :param pandas high_price:
+        :param pandas low_price:
+        :return float:
+        @author: Magnus
+    """
+    avgClose = (high_price.rolling(lookback).mean() - low_price.rolling(lookback).mean()) / close_price.rolling(lookback).mean()
+    return avgClose.iloc[-1]
 
 def getSharpe(returns, rf, days=252):
     """

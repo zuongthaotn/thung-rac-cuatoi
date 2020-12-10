@@ -9,7 +9,7 @@ def isValley3Days(Data):
     return (Data[-3] > Data[-2]) and (Data[-2] < Data[-1])
 
 #  Done
-def isCounterTrendV1(ticker_data):
+def isCounterTrendV1a(ticker_data):
     """
         Rule:
             1. Bien dong gia 1 thang(22 ngay) gan day <20%
@@ -23,26 +23,26 @@ def isCounterTrendV1(ticker_data):
     ticker_data22['avgHL'] = ticker_data22.apply(lambda row: (row.High + row.Low) / 2, axis=1)
     last5 = ticker_data22.tail(5)
     ticker_data5 = last5.copy()
-    min22ByAvgHL = ticker_data22[ticker_data22.AvgHL == ticker_data22.AvgHL.min()]
-    minAvgHL22 = min22ByAvgHL.AvgHL.values[0]
-    max22ByAvgHL = ticker_data22[ticker_data22.AvgHL == ticker_data22.AvgHL.max()]
-    maxAvgHL22 = max22ByAvgHL.AvgHL.values[0]
-    diffAvgHL22 = (maxAvgHL22 - minAvgHL22) * 100 / maxAvgHL22
+    min22ByAvgHL = ticker_data22[ticker_data22.avgHL == ticker_data22.avgHL.min()]
+    minAvgHL22 = min22ByAvgHL.avgHL.values[0]
+    max22ByAvgHL = ticker_data22[ticker_data22.avgHL == ticker_data22.avgHL.max()]
+    maxAvgHL22 = max22ByAvgHL.avgHL.values[0]
+    diffAvgHL22 = (maxAvgHL22 - minAvgHL22) / maxAvgHL22
     if diffAvgHL22 > 0.21:
         return False
-    min5ByAvgHL = ticker_data5[ticker_data5.AvgHL == ticker_data5.AvgHL.min()]
-    minAvgHL5 = min5ByAvgHL.AvgHL.values[0]
-    max5ByAvgHL = ticker_data5[ticker_data5.AvgHL == ticker_data5.AvgHL.max()]
-    maxAvgHL5 = max5ByAvgHL.AvgHL.values[0]
-    diffAvgHL5 = (maxAvgHL5 - minAvgHL5) * 100 / maxAvgHL5
+    min5ByAvgHL = ticker_data5[ticker_data5.avgHL == ticker_data5.avgHL.min()]
+    minAvgHL5 = min5ByAvgHL.avgHL.values[0]
+    max5ByAvgHL = ticker_data5[ticker_data5.avgHL == ticker_data5.avgHL.max()]
+    maxAvgHL5 = max5ByAvgHL.avgHL.values[0]
+    diffAvgHL5 = (maxAvgHL5 - minAvgHL5) / maxAvgHL5
     if diffAvgHL5 > 0.11:
         return False
     if ticker_data5.avgHL.values[-1] == minAvgHL5 or ticker_data5.avgHL.values[-1] < minAvgHL5 * 1.015:
         return True
     return False
 
-#  Doing
-def isCounterTrendV2(priceArrs):
+#  Done
+def isCounterTrendV1b(priceArrs):
     """
         Rule:
             1. Bien dong gia 1 thang(22 ngay) gan day <20%
@@ -64,6 +64,89 @@ def isCounterTrendV2(priceArrs):
     if diff5 > 0.11:
         return False
     if week_price[-1] == min_week or week_price[-1] < min_week * 1.015:
+        return True
+    return False
+
+#  Done
+def isCounterTrendV3a(ticker_data):
+    """
+        Rule:
+            1. Bien dong gia 3 thang(66 ngay) gan day <40%
+            2. Bien dong gia 1 thang(22 ngay) gan day <20%
+            3. Bien dong gia tuan(5 ngay) gan day < 15%
+            4. Dang giam gia
+                Price Low today is the min or smaller min5 * 3%
+                Price Low today is the smaller max5 * 0.93
+    :param ticker_data: pandas.core.DataFrame
+    """
+    last66 = ticker_data.tail(66)
+    ticker_data66 = last66.copy()
+    min66ByLow = ticker_data66[ticker_data66.Low == ticker_data66.Low.min()]
+    minLow66 = min66ByLow.Low.values[0]
+    max66ByHigh = ticker_data66[ticker_data66.High == ticker_data66.High.max()]
+    maxHigh66 = max66ByHigh.High.values[0]
+    diffHL66 = (maxHigh66 - minLow66) / maxHigh66
+    if diffHL66 > 0.41:
+        return False
+    last22 = ticker_data66.tail(22)
+    ticker_data22 = last22.copy()
+    min22ByLow = ticker_data22[ticker_data22.Low == ticker_data22.Low.min()]
+    minLow22 = min22ByLow.Low.values[0]
+    max22ByHigh = ticker_data22[ticker_data22.High == ticker_data22.High.max()]
+    maxHigh22 = max22ByHigh.High.values[0]
+    diffHL22 = (maxHigh22 - minLow22) / maxHigh22
+    if diffHL22 > 0.21:
+        return False
+    last5 = ticker_data22.tail(5)
+    ticker_data5 = last5.copy()
+    min5ByLow = ticker_data5[ticker_data5.Low == ticker_data5.Low.min()]
+    minLow5 = min5ByLow.Low.values[0]
+    max5ByHigh = ticker_data5[ticker_data5.High == ticker_data5.High.max()]
+    maxHigh5 = max5ByHigh.High.values[0]
+    diffHL5 = (maxHigh5 - minLow5) / maxHigh5
+    if diffHL5 > 0.15:
+        return False
+    if (ticker_data5.Low.values[-1] == minLow5 or ticker_data5.Low.values[-1] < minLow5 * 1.03\
+            or ticker_data5.Low.values[-1] == minLow22 or ticker_data5.Low.values[-1] < minLow22 * 1.03\
+            or ticker_data5.Low.values[-1] == minLow66 or ticker_data5.Low.values[-1] < minLow66 * 1.03)\
+            and ticker_data5.Low.values[-1] < ticker_data5.High.values[-1] * 0.93:
+        return True
+    return False
+#  Done
+
+def isCounterTrendV3b(lowPriceArrs, max_high_price_week):
+    """
+        Rule:
+            1. Bien dong gia 3 thang(66 ngay) gan day <40%
+            2. Bien dong gia 1 thang(22 ngay) gan day <20%
+            3. Bien dong gia tuan(5 ngay) gan day < 15%
+            4. Dang giam gia
+                Price Low today is the min or smaller min5 * 3%
+                Price Low today is the smaller max5 * 0.93
+    :param lowPriceArrs: numpy array
+    """
+    week_price = lowPriceArrs[-5:-1]
+    month_price = lowPriceArrs[-22:-1]
+    month3s_price = lowPriceArrs[-66:-1]
+    min_week = np.min(week_price)
+    max_week = np.max(week_price)
+    min_month = np.min(month_price)
+    max_month = np.max(month_price)
+    min_month3s = np.min(month3s_price)
+    max_month3s = np.max(month3s_price)
+    diff66 = (max_month3s - min_month3s) / max_month3s
+    if diff66 > 0.41:
+        return False
+    diff22 = (max_month - min_month) / max_month
+    if diff22 > 0.21:
+        return False
+    diff5 = (max_week - min_week) / max_week
+    if diff5 > 0.11:
+        return False
+    if (week_price[-1] == min_week or week_price[-1] < min_week * 1.03\
+            or week_price[-1] == min_month or week_price[-1] < min_month * 1.03\
+            or week_price[-1] == min_month3s or week_price[-1] < min_month3s * 1.03)\
+            and week_price[-1] < max_high_price_week * 0.93:
         return True
     return False
 
