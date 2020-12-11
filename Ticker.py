@@ -99,6 +99,8 @@ def isCounterTrendV3a(ticker_data):
         return False
     last5 = ticker_data22.tail(5)
     ticker_data5 = last5.copy()
+    if ticker_data5.Volume.rolling(window=5).mean().iloc[-1] < 500000:
+        return False
     min5ByLow = ticker_data5[ticker_data5.Low == ticker_data5.Low.min()]
     minLow5 = min5ByLow.Low.values[0]
     max5ByHigh = ticker_data5[ticker_data5.High == ticker_data5.High.max()]
