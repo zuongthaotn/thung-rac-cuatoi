@@ -148,12 +148,20 @@ def get_pricing_by_path(filepath, start_date='2000-07-28', end_date=None):
     return None
 
 
-
-def getListVN30():
+def getListVN30Jan2020():
     hose30 = ["CII", "CTD", "CTG", "DHG", "DPM", "EIB", "FPT", "GAS", "GMD", "HDB",
               "HPG", "MBB", "MSN", "MWG", "NVL", "PNJ", "REE", "ROS", "SAB", "SBT",
               "SSI", "STB", "TCB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE"]
     return hose30
+
+def getListVN30Jan2021():
+    hose30 = ["BID", "BVH", "CTG", "FPT", "GAS", "HDB", "HPG", "KDH", "MBB", "MSN",
+              "MWG", "NVL", "PDR", "PLX", "PNJ", "POW", "REE", "SBT", "SSI", "STB",
+              "TCB", "TCH", "TPB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE"]
+    return hose30
+
+def getListVN30():
+    return getListVN30Jan2021()
 
 
 def getListVN30ProfitableOfStockBreakout():
