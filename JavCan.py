@@ -8,36 +8,95 @@ def convertToJapanCandle(ticker_data):
     return ticker_data
 
 
+####------------------------------------------------------------------------------------------------------------#####
+SPINNING_BODY_HEIGHT_RATE = 0.3
+SPINNING_UP_SHADOW_HEIGHT_RATE = 0.25
+SPINNING_LOWER_SHADOW_HEIGHT_RATE = 0.25
+
+SHAVEN_UP_SHADOW_HEIGHT_RATE = 0.05
+SHAVEN_LOWER_SHADOW_HEIGHT_RATE = 0.05
+
+DOJI_BODY_HEIGHT_RATE = 0.05
+
+
+def isWhiteCandlestick(open_price, close_price):
+    if close_price > open_price:
+        return True
+    return False
+
+
+def isBlackCandlestick(open_price, close_price):
+    if close_price < open_price:
+        return True
+    return False
+
+
+def isSpinningTopCandlestick(body, height, up, bot):
+    if body < SPINNING_BODY_HEIGHT_RATE * height:
+        if up > SPINNING_UP_SHADOW_HEIGHT_RATE * height:
+            if bot > SPINNING_LOWER_SHADOW_HEIGHT_RATE * height:
+                return True
+    return False
+
+
+def isShavenHead(height, up):
+    if up < SHAVEN_UP_SHADOW_HEIGHT_RATE * height:
+        return True
+    return False
+
+
+def isShavenBottom(height, bot):
+    if bot < SHAVEN_LOWER_SHADOW_HEIGHT_RATE * height:
+        return True
+    return False
+
+def isDoji(body, height):
+    if body < DOJI_BODY_HEIGHT_RATE * height:
+        return True
+    return False
+
+def isUmbrellaCandlestick(body, height, up, bot):
+    if up < 0.05 * height:
+        if body < 0.3 * height:
+            if bot > 0.65 * height:
+                return True
+    return False
+
+
+####------------------------------------------------------------------------------------------------------------#####
+
 def isHammer(_4daysData):
     """
     # In a down trend (base on High price)
     # Small body height (base on total height)
     # Small or none upper shadow
+    # Body is in upper part of candlestick the below shadow is very long( at least x2 body)
 
     :param _4daysData: pandas.core.DataFrame:
-    :return:
+    :return bool:
     """
     h_prices = _4daysData.High
     body = _4daysData.Body
     height = _4daysData.Height
     u = _4daysData.UpShadow
-    isDownTrend = isSmallBody = isSmallUpperShadow = False
+    l = _4daysData.LowerShadow
+    isDownTrend = isSmallBody = isSmallUpperShadow = hasLongTail = False
     if h_prices[-1] < h_prices[-2]:
         if h_prices[-2] < h_prices[-3]:
             if h_prices[-3] < h_prices[-4]:
-                # print("Down Trend")
                 isDownTrend = True
     if body[-1] < 0.45 * height[-1]:
-        # print("Small body")
         isSmallBody = True
     if u[-1] == 0 or u[-1] < 0.1 * height[-1]:
-        # print("Small upper shadow")
         isSmallUpperShadow = True
+    if l[-1] > 2 * body:
+        hasLongTail = True
 
-    if isDownTrend is True and isSmallBody is True and isSmallUpperShadow is True:
+    if isDownTrend is True and isSmallBody is True and isSmallUpperShadow is True and hasLongTail is True:
         return True
     else:
         return False
+
 
 def isHangingMan(_4daysData):
     """
@@ -60,15 +119,11 @@ def isHangingMan(_4daysData):
                 isUpTrend = True
     if float(body[-1]) < 0.45 * float(height[-1]):
         isSmallBody = True
-    if uShadow[-1] == 0 or (float(uShadow[-1]) < 0.1 * float(height[-1]) and float(body[-1]) < 0.3 * float(lShadow[-1])):
+    if uShadow[-1] == 0 or (
+            float(uShadow[-1]) < 0.1 * float(height[-1]) and float(body[-1]) < 0.3 * float(lShadow[-1])):
         isSmallUpperShadow = True
 
     if isUpTrend is True and isSmallBody is True and isSmallUpperShadow is True:
-        print(_4daysData.tail(1))
-        print(height[-1])
-        print(body[-1])
-        print(lShadow[-1])
-        print(0.3 * float(lShadow[-1]))
         return True
     else:
         return False
