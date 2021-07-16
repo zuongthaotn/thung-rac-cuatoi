@@ -18,6 +18,9 @@ SHAVEN_LOWER_SHADOW_HEIGHT_RATE = 0.05
 
 DOJI_BODY_HEIGHT_RATE = 0.05
 
+UMBRELLA_BODY_HEIGHT_RATE = 0.3
+UMBRELLA_BOTTOM_HEIGHT_RATE = 0.65
+
 
 def isWhiteCandlestick(open_price, close_price):
     if close_price > open_price:
@@ -40,12 +43,24 @@ def isSpinningTopCandlestick(body, height, up, bot):
 
 
 def isShavenHead(height, up):
+    """
+    Nến cạo đầu
+    :param height:
+    :param up:
+    :return:
+    """
     if up < SHAVEN_UP_SHADOW_HEIGHT_RATE * height:
         return True
     return False
 
 
 def isShavenBottom(height, bot):
+    """
+    Nến cạo đáy
+    :param height:
+    :param bot:
+    :return:
+    """
     if bot < SHAVEN_LOWER_SHADOW_HEIGHT_RATE * height:
         return True
     return False
@@ -56,9 +71,9 @@ def isDoji(body, height):
     return False
 
 def isUmbrellaCandlestick(body, height, up, bot):
-    if up < 0.05 * height:
-        if body < 0.3 * height:
-            if bot > 0.65 * height:
+    if up < SHAVEN_UP_SHADOW_HEIGHT_RATE * height:
+        if body < UMBRELLA_BODY_HEIGHT_RATE * height:
+            if bot > UMBRELLA_BOTTOM_HEIGHT_RATE * height:
                 return True
     return False
 
