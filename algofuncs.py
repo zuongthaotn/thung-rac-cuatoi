@@ -100,6 +100,25 @@ def RSI(array, n):
     rs = gain.ewm(n).mean() / loss.abs().ewm(n).mean()
     return 100 - 100 / (1 + rs)
 
+
+# Done
+def RSIV2(priceArrs, n):
+    _days = priceArrs[-n:-1]
+    totalIncrease = 0
+    totalDecrease = 0
+    lastPrice = priceArrs[-1]
+    for data in _days:
+        close_price = data
+        if close_price > lastPrice:
+            totalIncrease += close_price - lastPrice
+        else:
+            totalDecrease += lastPrice - close_price
+        lastPrice = close_price
+    if totalDecrease == 0:
+        return False
+    RS = totalIncrease / totalDecrease
+    return 100 - 100 / (1 + RS)
+
 def MMI(data, period=100):
     '''
     MMM - Market Meanness Index
