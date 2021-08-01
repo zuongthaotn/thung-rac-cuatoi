@@ -179,8 +179,14 @@ def getListVN30Jan2021():
               "TCB", "TCH", "TPB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE"]
     return hose30
 
+def getListVN30Aug2021():
+    hose30 = ["BID", "BVH", "CTG", "FPT", "GAS", "HDB", "HPG", "KDH", "MBB", "MSN",
+              "MWG", "NVL", "PDR", "PLX", "PNJ", "POW", "SSI", "STB",
+              "TCB", "TPB", "VCB", "VHM", "VIC", "VJC", "VNM", "VPB", "VRE", "ACB", "SAB", "GVR"]
+    return hose30
+
 def getListVN30():
-    return getListVN30Jan2021()
+    return getListVN30Aug2021()
 
 
 def getListVN30ProfitableOfStockBreakout():

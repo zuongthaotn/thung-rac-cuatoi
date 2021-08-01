@@ -212,9 +212,9 @@ def isHammerModel(_open, _close, _high, _low, _body, _height, _up, _down):
     :param :
     :return bool:
     """
-    isDownTrend = isDownTrendV1(_open, _close, _high, _low, _body, _height, _up, _down)
-    _iuc = isUmbrellaCandlestick(_body[-1], _height[-1], _up[-1], _down[-1])
-    _iwc = isWhiteCandlestick(_open[-1], _close[-1])
+    isDownTrend = isDownTrendV2ByRSI(_close[:-2])
+    _iuc = isHammer(_body[-1], _height[-1], _up[-1], _down[-1])
+    # _iwc = isWhiteCandlestick(_open[-1], _close[-1])
     if isDownTrend is True and _iuc is True:
         return True
     else:
@@ -413,6 +413,7 @@ def customBuySignal03(_open, _close, _high, _low, _body, _height, _up, _down):
     return False
 
 def customBuySignal04(_open, _close, _high, _low, _body, _height, _up, _down):
+    """ Optimize the Hammer pattern"""
     isDownTrend = isDownTrendV2ByRSI(_close[:-2])
     todayIsHammer = isHammer(_body[-1], _height[-1], _up[-1], _down[-1])
     todayIsWhite = isWhiteCandlestick(_open[-1], _close[-1])
@@ -436,9 +437,12 @@ def customSellSignal02(_open, _close, _high, _low, _body, _height, _up, _down):
 ####------------------------------------------------------------------------------------------------------------#####
 
 def hasBuySignal(_open, _close, _high, _low, _body, _height, _up, _down, _volume=0, _date=''):
-    has04 = customBuySignal04(_open, _close, _high, _low, _body, _height, _up, _down)
-    if has04 is not False:
-        return has04
+
+    # Hammer Pattern not working fine with back test, bad result
+    # _iHm = isHammerModel(_open, _close, _high, _low, _body, _height, _up, _down)
+    # if _iHm is True:
+    #     return 'isHammerModel'
+
     _ibu = isBullishEngulfing(_open, _close, _high, _low, _body, _height, _up, _down)
     if _ibu is True:
         return 'isBullishEngulfing'
@@ -463,6 +467,10 @@ def hasBuySignal(_open, _close, _high, _low, _body, _height, _up, _down, _volume
     _cBS03 = customBuySignal03(_open, _close, _high, _low, _body, _height, _up, _down)
     if _cBS03 is True:
         return 'customBuySignal03'
+
+    _cBS04 = customBuySignal04(_open, _close, _high, _low, _body, _height, _up, _down)
+    if _cBS04 is not False:
+        return _cBS04
 
     return False
 
@@ -501,29 +509,19 @@ def hasSellSignal(_open, _close, _high, _low, _body, _height, _up, _down, _volum
 
 def hasCustomBuySignal(_open, _close, _high, _low, _body, _height, _up, _down, version=0):
     if version == 1 or version == 0:
-        isDownTrend = isDownTrendV1(_open, _close, _high, _low, _body, _height, _up, _down)
-        _ibc = isSpinningTopCandlestick(_body[-2], _height[-2], _up[-2], _down[-2])
-        _iwc = isWhiteCandlestick(_open[-1], _close[-1])
-        _ibb = isBigBody(_body[-1], _height[-1], _open[-1], _close[-1])
-        if isDownTrend is True and _ibc is True \
-                and _iwc is True and _ibb is True \
-                and _close[-1] > _close[-2]:
-            return "hasBuySignal-01"
-    if version == 2 or version == 0:
-        isDownTrend = isDownTrendV1(_open, _close, _high, _low, _body, _height, _up, _down)
-        the2ndDayIsDoji = isDoji(_body[-2], _height[-2])
-        todayIsShavenHead = isShavenHead(_height[-1], _up[-1])
-        todayIsWhite = isWhiteCandlestick(_open[-1], _close[-1])
-        if isDownTrend is True and the2ndDayIsDoji is True and todayIsShavenHead is True and todayIsWhite is True:
-            return "hasBuySignal-02"
-    if version == 3 or version == 0:
-        # isDownTrend = isDownTrendV1(_open, _close, _high, _low, _body, _height, _up, _down)
-        prevDayIsShavenBottom = isShavenBottom(_height[-2], _down[-2])
-        todayIsShavenHead = isShavenHead(_height[-1], _up[-1])
-        todayIsWhite = isWhiteCandlestick(_open[-1], _close[-1])
+        _cBS01 = customBuySignal01(_open, _close, _high, _low, _body, _height, _up, _down)
+        if _cBS01 is True:
+            return 'customBuySignal01'
 
-        if prevDayIsShavenBottom is True and todayIsShavenHead is True and todayIsWhite is True:
-            return "hasBuySignal-03"
+    if version == 2 or version == 0:
+        _cBS02 = customBuySignal02(_open, _close, _high, _low, _body, _height, _up, _down)
+        if _cBS02 is True:
+            return 'customBuySignal02'
+
+    if version == 3 or version == 0:
+        _cBS03 = customBuySignal03(_open, _close, _high, _low, _body, _height, _up, _down)
+        if _cBS03 is True:
+            return 'customBuySignal03'
 
     return False
 
