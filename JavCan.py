@@ -8,9 +8,10 @@ def convertToJapanCandle(ticker_data):
         lambda x: (x['High'] - x['Close']) if (x['Close'] > x['Open']) else (x['High'] - x['Open']), axis=1)
     ticker_data['LowerShadow'] = ticker_data.apply(
         lambda x: (x['Open'] - x['Low']) if (x['Close'] > x['Open']) else (x['Close'] - x['Low']), axis=1)
-    from datetime import datetime
-    ticker_data['Date'] = ticker_data.apply(
-        lambda x: datetime.fromtimestamp(x['Time']).strftime("%m/%d/%Y"), axis=1)
+    if 'Time' in ticker_data.columns:
+        from datetime import datetime
+        ticker_data['Date'] = ticker_data.apply(
+            lambda x: datetime.fromtimestamp(x['Time']).strftime("%m/%d/%Y"), axis=1)
     return ticker_data
 
 
