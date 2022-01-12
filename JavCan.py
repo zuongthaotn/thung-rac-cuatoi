@@ -205,6 +205,7 @@ def isUpTrendV2ByRSI(_close):
 
 def isDownTrendV2ByRSI(_close):
     # return True if _af.RSIV2(_close, 5) < 45 else False
+    # RSI for 5 days
     rsi = _af.RSI(_close, 5).tail(1).item()
     return True if rsi < 45 else False
 ####------------------------------------------------------------------------------------------------------------#####

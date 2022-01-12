@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import Ticker
+import method.Ticker as Ticker
 import platform
 import os
 

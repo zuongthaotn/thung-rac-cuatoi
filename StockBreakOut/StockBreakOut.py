@@ -1,11 +1,19 @@
+import warnings
+warnings.filterwarnings('ignore')
+
+import os
+import sys
+
+import method.algofuncs as _af
+
 import numpy as np
 import pandas as pd
-import Ticker
-
+import method.Ticker as Ticker
 
 def main():
+    DATA_PATH = os.path.abspath('vn-stock-data/VNX/')
     ticker_id = 'BID'
-    file = '../data/VNX/' + ticker_id + '/Price.csv'
+    file = DATA_PATH + '/' + ticker_id + '.csv'
     ticker_data = pd.read_csv(file)
     data = np.array(ticker_data)
     getResult(ticker_id, data)
@@ -19,7 +27,7 @@ def getResult(ticker_id, np_data):
     # print(price_data)
     # print(len(price_data))
     # return
-    f = open("../tracking-history.log", "w+")
+    f = open("tracking-history.log", "w+")
     close_col_index = 4
     date_col_index = 0
     sold = True
