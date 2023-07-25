@@ -56,6 +56,20 @@ def hasBuySignal(sma_h, open=None, close=None, sma5=None, sma20=None):
         return False
     if p1_sma_h > 0 and p2_sma_h > p1_sma_h and p3_sma_h > p2_sma_h and (p3_sma_h / p1_sma_h) > 2.5:
         return True
+
+    """
+        5 days (ago) sma5 was above sma20
+        2 days ago sma5 > yesterday sma5
+        yesterday sma5 > today sma5
+        today sma20 is above sma5
+        sma_height_2_days_ago > 2.5 * sma_height_today
+        """
+    p4_sma_h = sma_h[-4]
+    p5_sma_h = sma_h[-5]
+    p6_sma_h = sma_h[-6]
+    if p5_sma_h > 0 and p4_sma_h > 0 and p3_sma_h > 0 and p2_sma_h > 0 and p1_sma_h > 0:
+        if p5_sma_h > p4_sma_h and p4_sma_h > p3_sma_h and p3_sma_h > p2_sma_h and p2_sma_h < p1_sma_h:
+            return True
     return False
 
 
