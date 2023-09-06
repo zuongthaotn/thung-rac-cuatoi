@@ -26,7 +26,6 @@ def hasBuySignal(macd, signal):
     today_signal = signal[-1]
     yesterday_macd = macd[-2]
     yesterday_signal = signal[-2]
-    print("----{}------{}----{}------{}", today_macd, today_signal, yesterday_macd, yesterday_signal)
     if yesterday_macd < yesterday_signal and today_macd > today_signal:
         return True
     return False
