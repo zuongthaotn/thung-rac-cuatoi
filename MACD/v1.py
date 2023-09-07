@@ -28,6 +28,8 @@ def hasBuySignal(macd, signal):
     today_signal = signal[-1]
     yesterday_macd = macd[-2]
     yesterday_signal = signal[-2]
+    # if yesterday_macd > 0:
+    #     return False
     if yesterday_macd < yesterday_signal and today_macd > today_signal:
         return True
     return False
