@@ -3,6 +3,8 @@ import numpy as np
 import pandas_ta as ta
 from datetime import datetime
 
+CUTLOSS_PERCENT = 0.97
+
 def prepareData(htd):
     if 'Time' in htd.columns:
         htd['DateStr'] = htd.apply(
@@ -39,5 +41,10 @@ def hasSellSignal(macd, signal):
     yesterday_macd = macd[-2]
     yesterday_signal = signal[-2]
     if yesterday_macd > yesterday_signal and today_macd < today_signal:
+        return True
+    return False
+
+def has_force_sell_signal(current_price, buy_price):
+    if current_price < buy_price * CUTLOSS_PERCENT:
         return True
     return False
