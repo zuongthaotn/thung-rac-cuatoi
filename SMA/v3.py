@@ -12,6 +12,8 @@ def prepareData(htd):
     htd['SMA_20'] = htd['Close'].rolling(window=20).mean()
     htd['SMA_H'] = htd.apply(
         lambda x: (x['SMA_20'] - x['SMA_5']), axis=1)
+    htd['SMA_R'] = htd.apply(
+        lambda x: ((x['SMA_20'] - x['SMA_5'])/x['Close']), axis=1)
     htd['Date'] = pd.to_datetime(htd['DateStr'])
     ticker_data = htd.set_index('Date')
     ticker_data.drop(['Time'], axis=1)
@@ -20,6 +22,7 @@ def prepareData(htd):
     ticker_data['SMA_5'] = ticker_data['SMA_5'].replace(np.nan, 0)
     ticker_data['SMA_20'] = ticker_data['SMA_20'].replace(np.nan, 0)
     ticker_data['SMA_H'] = ticker_data['SMA_H'].replace(np.nan, 0)
+    ticker_data['SMA_R'] = ticker_data['SMA_R'].replace(np.nan, 0)
     return ticker_data
 
 def prepareDataVersionOffline(htd):
