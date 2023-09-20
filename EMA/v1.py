@@ -15,7 +15,7 @@ def prepareData(htd):
     htd['EMA_H'] = htd.apply(
         lambda x: (x['EMA_20'] - x['EMA_5']), axis=1)
     htd['EMA_R'] = htd.apply(
-        lambda x: ((x['EMA_5'] - x['EMA_20']) / x['EMA_5']), axis=1)
+        lambda x: ((x['EMA_5'] - x['EMA_20']) * 10 / x['EMA_5']), axis=1)
     htd["RSI_20"] = ta.rsi(htd["Close"], length=20, fillna=True)
     htd['RSI_mini'] = htd.apply(
         lambda x: (x['RSI_20'] / 100), axis=1)
