@@ -1,0 +1,1 @@
+https://blog.knoldus.com/complete-guide-to-single-layer-perceptron-with-implementation/
